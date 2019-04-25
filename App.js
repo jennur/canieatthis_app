@@ -23,8 +23,8 @@ const MainNavigator = createStackNavigator(
         shadowColor: "transparent"
       },
       headerTitleStyle: {
-        color: "#ec9937"
-        //fontFamily: "PacificoRegular"
+        color: "#ec9937",
+        fontFamily: "PacificoRegular"
       }
     }
   }

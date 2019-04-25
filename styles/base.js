@@ -1,4 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  "window"
+);
 
 export const spacing = {
   xs: 5,
@@ -22,6 +25,14 @@ export const base = StyleSheet.create({
     fontFamily: "PacificoRegular",
     color: "#ec9937"
   },
+  backgroundImage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: viewportWidth,
+    height: viewportHeight,
+    backgroundColor: "transparent"
+  },
   headline: {
     fontSize: 20,
     textAlign: "left",
@@ -39,7 +50,7 @@ export const base = StyleSheet.create({
     fontSize: 16
   },
   captureButton: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     height: 40,
     paddingHorizontal: 15,
     margin: 20,
@@ -54,7 +65,7 @@ export const base = StyleSheet.create({
     textDecorationLine: "underline"
   },
   text: {
-    color: '#ec9937'
+    color: "#ec9937"
   },
   preview: {
     flex: 1,
