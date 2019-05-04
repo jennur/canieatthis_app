@@ -11,8 +11,7 @@ const MainNavigator = createStackNavigator(
   {
     Home: { screen: Home },
     Camera: { screen: CameraView },
-    CameraRoll: { screen: CameraRollView },
-    Results: { screen: ResultView }
+    CameraRoll: { screen: CameraRollView }
   },
   {
     initialRouteName: "Home",

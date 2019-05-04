@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
+import Results from '../components/ResultsComponent';
 import { Permissions, ImagePicker } from "expo";
 import postImage from "../scripts/postImage";
 import resizeImage from "../scripts/resizeImage";
@@ -66,7 +67,7 @@ export default class CameraRollView extends React.Component {
                 <Image source={{ uri: imageUri }} />
               </View>
             )}
-            <Text style={base.text}>{ingredients ? ingredients : null}</Text>
+            <Results style={} ingredients={ ingredients } />
           </ScrollView>
         </View>
       );
