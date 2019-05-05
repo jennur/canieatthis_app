@@ -11,11 +11,38 @@ export const spacing = {
 };
 
 export const base = StyleSheet.create({
-  container: {
+  homeContainer: {
+    width: viewportWidth,
+    height: viewportHeight,
     flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#001E32"
+  },
+  container: {
+    width: viewportWidth,
+    height: viewportHeight,
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    backgroundColor: "#001E32"
+  },
+  maxWidthContainer: {
+    width: viewportWidth
+  },
+  camera: {
+    flex: 1,
+    width: viewportWidth,
+    height: viewportHeight
+  },
+  cameraView: {
+    width: viewportWidth,
+    height: viewportHeight,
+    flex: 1,
+    backgroundColor: "transparent",
+    flexDirection: "column"
   },
   welcome: {
     fontSize: 40,
@@ -29,43 +56,75 @@ export const base = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    width: viewportWidth,
-    height: viewportHeight,
+    width: "100%",
+    height: "100%",
     backgroundColor: "transparent"
   },
+  image: {
+    width: viewportWidth
+  },
   headline: {
-    fontSize: 20,
+    fontSize: 25,
     textAlign: "left",
-    color: "#ec9937"
+    color: "#ec9937",
+    fontFamily: "QuicksandRegular",
+    margin: 20
   },
   button: {
     height: 40,
     paddingHorizontal: 15,
     borderRadius: 3,
     justifyContent: "center",
+    alignSelf: "center",
     color: "#000000",
-    backgroundColor: "#9CC66C"
+    backgroundColor: "#9CC66C",
+    margin: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.7,
+    shadowRadius: 3
   },
   buttonText: {
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: "QuicksandRegular"
   },
-  captureButton: {
-    alignSelf: "flex-end",
+  buttonBottomScreen: {
+    position: "absolute",
+    bottom: 0,
     height: 40,
     paddingHorizontal: 15,
     margin: 20,
     borderRadius: 3,
     justifyContent: "center",
+    alignSelf: "center",
     color: "#000000",
-    backgroundColor: "#9CC66C"
+    fontFamily: "QuicksandRegular",
+    backgroundColor: "#9CC66C",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3
   },
   link: {
     color: "#9CC66C",
     padding: 20,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
+    fontFamily: "QuicksandRegular"
   },
   text: {
+    color: "#ec9937",
+    fontFamily: "QuicksandRegular"
+  },
+  allergenText: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    fontFamily: "QuicksandRegular",
     color: "#ec9937"
+  },
+  allergyIcon: {
+    width: 30,
+    height: 30
   },
   preview: {
     flex: 1,

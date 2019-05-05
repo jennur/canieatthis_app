@@ -2,7 +2,6 @@ import React from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Home from "./screens/Home";
 import CameraView from "./screens/Camera";
-import ResultView from "./screens/Results";
 import CameraRollView from "./screens/CameraRoll";
 import { Font, AppLoading } from "expo";
 import { FontAwesome } from "@expo/vector-icons";
@@ -58,7 +57,8 @@ class App extends React.Component {
   }
   async componentDidMount() {
     await Font.loadAsync({
-      PacificoRegular: require("./assets/fonts/Pacifico-Regular.ttf")
+      PacificoRegular: require("./assets/fonts/Pacifico-Regular.ttf"),
+      QuicksandRegular: require("./assets/fonts/Quicksand-Regular.ttf")
     });
     this.setState({ fontLoaded: true });
   }

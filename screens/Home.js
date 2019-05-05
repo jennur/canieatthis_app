@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import { ImageBackground, Text, View, TouchableOpacity } from "react-native";
 import { base } from "../styles/base";
 import { Font, AppLoading } from "expo";
 import { FontAwesome } from "@expo/vector-icons";
@@ -22,8 +22,8 @@ export default class Home extends React.Component {
   render() {
     if (this.state.isReady) {
       return (
-        <View style={base.container}>
-          <Image
+        <View style={base.homeContainer}>
+          <ImageBackground
             source={allergensBackground}
             style={base.backgroundImage}
             resizeMode="repeat"

@@ -8,9 +8,12 @@ import {
 } from "react-native";
 
 import { Camera, Permissions } from "expo";
+import Results from "../components/ResultsComponent";
 import { base } from "../styles/base";
 import resizeImage from "../scripts/resizeImage";
 import postImage from "../scripts/postImage";
+import renderTextBoxes from "../scripts/renderTextBoxes";
+import detectAllergens from "../scripts/detectAllergens";
 
 export default class CameraView extends React.Component {
   static navigationOptions = {
@@ -20,7 +23,11 @@ export default class CameraView extends React.Component {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
     beforeCapture: true,
-    ingredients: ""
+    image: null,
+    ingredients: "",
+    allergens: null,
+    imageWithBoxes: null,
+    viewImage: false
   };
 
   async componentDidMount() {
@@ -52,8 +59,11 @@ export default class CameraView extends React.Component {
             )
         )
         .then(
-          picture => {
-            let data = postImage(picture.base64);
+          image => {
+            let data = postImage(image.base64);
+            this.setState({
+              image: image
+            });
             return data;
           },
           error =>
@@ -67,10 +77,38 @@ export default class CameraView extends React.Component {
             console.log(
               "DATA FROM CAMERA::::" + data["image"]["text"] + ":::END DATA"
             );
+            /* Add colored boxes to posted image */
+            let imageWithBoxes = renderTextBoxes(
+              this.state.image,
+              data["image"]["text_full"]
+            );
+            this.setState({ imageWithBoxes: imageWithBoxes });
+            /* End add colored boxes to posted image */
+            return data["image"]["id"];
           },
           error =>
             console.log(
               error + " ::::Something went wrong in captureImage stage 3"
+            )
+        )
+        .then(
+          imageID => {
+            let allergens = detectAllergens(imageID);
+            return allergens;
+          },
+          error =>
+            console.log(
+              error + " ::::Something went wrong in captureImage stage 4"
+            )
+        )
+        .then(
+          allergens => {
+            console.log("DETECTED ALLERGENS::::" + allergens + "::::END D.A.");
+            this.setState({ allergens: allergens });
+          },
+          error =>
+            console.log(
+              error + " ::::Something went wrong in captureImage stage 5"
             )
         );
     } else {
@@ -86,42 +124,55 @@ export default class CameraView extends React.Component {
     } else {
       let { beforeCapture } = this.state;
       let { ingredients } = this.state;
-      return (
-        <View style={base.container}>
-          {beforeCapture ? (
-            <Camera
-              type={this.state.type}
-              ref={ref => {
-                this.cameraview = ref;
-              }}
-              style={{
-                flex: 1,
-                height: Dimensions.get("window").height,
-                width: Dimensions.get("window").width
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: "transparent",
-                  flexDirection: "row"
+      let { allergens } = this.state;
+      let { imageWithBoxes } = this.state;
+      return beforeCapture ? (
+        <View style={base.homeContainer}>
+          <Camera
+            type={this.state.type}
+            ref={ref => {
+              this.cameraview = ref;
+            }}
+            style={base.camera}
+          >
+            <View style={base.cameraView}>
+              <TouchableOpacity
+                style={base.buttonBottomScreen}
+                onPress={() => {
+                  this.captureImage();
                 }}
               >
-                <TouchableOpacity
-                  style={base.captureButton}
-                  onPress={() => {
-                    this.captureImage();
-                  }}
-                >
-                  <Text style={base.buttonText}>Detect ingredients</Text>
-                </TouchableOpacity>
-              </View>
-            </Camera>
-          ) : (
-            <ScrollView>
-              <Text style={base.text}>{ingredients}</Text>
-            </ScrollView>
-          )}
+                <Text style={base.buttonText}>Detect ingredients</Text>
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        </View>
+      ) : (
+        <View style={base.container}>
+          <ScrollView horizontal={false} showsHorizontalScrollIndicator={false}>
+            <View>
+              <Results
+                navigation={this.props.navigation}
+                ingredients={ingredients}
+                allergens={allergens}
+              />
+              <TouchableOpacity
+                style={base.button}
+                onPress={() =>
+                  this.setState({ viewImage: !this.state.viewImage })
+                }
+              >
+                <Text style={base.buttonText}>See detected text</Text>
+              </TouchableOpacity>
+              {this.state.viewImage ? imageWithBoxes : null}
+            </View>
+          </ScrollView>
+          <TouchableOpacity
+            style={base.buttonBottomScreen}
+            onPress={() => this.props.navigation.navigate("Home")}
+          >
+            <Text style={base.buttonText}>Scan again</Text>
+          </TouchableOpacity>
         </View>
       );
     }
