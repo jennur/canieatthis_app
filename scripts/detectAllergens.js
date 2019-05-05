@@ -1,17 +1,10 @@
 export default function detectAllergens(imageId) {
   let allergensList = fetch(
-    "https://canieatthis.appspot.com/resources/images/" +
-      imageId -
-      40 +
-      "/allergens"
+    "https://canieatthis.appspot.com/resources/images/" + imageId + "/allergens"
   )
     .then(response => {
-      if (response.status === 200) {
-        let responseObject = JSON.parse(response["_bodyInit"]);
-        return responseObject.allergens;
-      } else {
-        console.log(response.status);
-      }
+      let responseObject = JSON.parse(response["_bodyInit"]);
+      return responseObject.allergens;
     })
     .then(allergensObject => {
       let allergensArray = Object.entries(allergensObject);

@@ -61,7 +61,10 @@ export const base = StyleSheet.create({
     backgroundColor: "transparent"
   },
   image: {
-    width: viewportWidth
+    width: viewportWidth,
+    position: "absolute",
+    top: 0,
+    left: 0
   },
   headline: {
     fontSize: 25,
@@ -120,7 +123,8 @@ export const base = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     fontFamily: "QuicksandRegular",
-    color: "#ec9937"
+    color: "#ec9937",
+    marginLeft: 20
   },
   allergyIcon: {
     width: 30,
