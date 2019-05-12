@@ -168,22 +168,24 @@ export default class CameraView extends React.Component {
       ) : (
         <View style={base.container}>
           <ScrollView horizontal={false} showsHorizontalScrollIndicator={false}>
-            <View>
-              <Results
-                navigation={this.props.navigation}
-                ingredients={ingredients}
-                allergens={allergens}
-              />
-              <TouchableOpacity
-                style={base.button}
-                onPress={() =>
-                  this.setState({ viewImage: !this.state.viewImage })
-                }
-              >
-                <Text style={base.buttonText}>See detected text</Text>
-              </TouchableOpacity>
-              {this.state.viewImage ? imageWithBoxes : null}
-            </View>
+            <Results
+              navigation={this.props.navigation}
+              ingredients={ingredients}
+              allergens={allergens}
+            />
+            <TouchableOpacity
+              style={base.button}
+              onPress={() =>
+                this.setState({ viewImage: !this.state.viewImage })
+              }
+            >
+              <Text style={base.buttonText}>See detected text</Text>
+            </TouchableOpacity>
+            {this.state.viewImage ? (
+              <View style={{ height: this.state.imageHeight }}>
+                {imageWithBoxes}
+              </View>
+            ) : null}
           </ScrollView>
           <TouchableOpacity
             style={base.buttonBottomScreen}

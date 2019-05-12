@@ -1,5 +1,12 @@
 import React from "react";
-import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Dimensions
+} from "react-native";
 import Results from "../components/ResultsComponent";
 import { Permissions, ImagePicker } from "expo";
 
@@ -19,6 +26,8 @@ export default class CameraRollView extends React.Component {
     image: null,
     imageBase64: "",
     imageUri: "",
+    imageWidth: null,
+    imageHeight: null,
     ingredients: "",
     allergens: null,
     imageWithBoxes: null,
@@ -43,7 +52,10 @@ export default class CameraRollView extends React.Component {
     });
 
     if (!pickedImage.cancelled) {
-      let resizedImage = await resizeImage(pickedImage.uri, 600);
+      let resizedImage = await resizeImage(
+        pickedImage.uri,
+        Dimensions.get("window").width
+      );
 
       this.setState({
         image: resizedImage,
@@ -53,14 +65,19 @@ export default class CameraRollView extends React.Component {
 
       /* Post image and receive allergy data */
       let data = await postImage(resizedImage.base64);
+
       /* End post image and receive allergy data */
 
       /* Add colored boxes to posted image */
-      let imageWithBoxes = renderTextBoxes(
-        resizedImage,
-        data["image"]["text_full"]
-      );
-      this.setState({ imageWithBoxes: imageWithBoxes });
+      await Image.getSize(this.state.image.uri, (width, height) => {
+        let imageWithBoxes = renderTextBoxes(
+          this.state.image,
+          width,
+          height,
+          data["image"]["text_full"]
+        );
+        this.setState({ imageWithBoxes: imageWithBoxes });
+      });
       /* End add colored boxes to posted image */
 
       /* Get list of allergens detected */
