@@ -1,23 +1,15 @@
 import React from "react";
-import { View, Dimensions, Image } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { base } from "../styles/base";
-const { width: newImageWidth } = Dimensions.get("window");
 
-export default function renderTextBoxes(image, textContent) {
+export default function renderTextBoxes(
+  image,
+  imageWidth,
+  imageHeight,
+  textContent
+) {
   let textContentArray = Object.entries(textContent);
-  /*var resizePercentages = Image.getSize(
-    image.uri,
-    (width, height) => {
-      let aspectRatio = height / width;
-      let newImageHeight = aspectRatio * newImageWidth;
-      return newImageWidth/newImageHeight;
-    },
-    error => {
-      console.log(error);
-      return [1,1];
-    }
-  );*/
-  // console.log("RESIZE PERCENTAGES:::: " + resizePercentages);
+
   let squares = [];
   let key = 0;
   for (let i = 0; i < textContentArray.length; i++) {
@@ -27,14 +19,6 @@ export default function renderTextBoxes(image, textContent) {
     let leftPos = vertices[0][0];
     let width = vertices[2][0] - leftPos;
     let height = vertices[3][1] - topPos;
-    //Aviv's code
-    let num = newImageWidth / 600;
-    width *= num;
-    height *= num;
-    topPos = topPos * num + 65;
-    leftPos *= num;
-
-    //Aviv's code
 
     let square = (
       <View
@@ -55,9 +39,14 @@ export default function renderTextBoxes(image, textContent) {
   }
 
   const renderedImage = (
-    <View>
-      <Image resizeMode="contain" style={base.image} source={image} />
-      {squares}
+    <View style={base.imageContainer}>
+      <ImageBackground
+        resizeMode="cover"
+        style={[base.image, { width: imageWidth, height: imageHeight }]}
+        source={image}
+      >
+        {squares}
+      </ImageBackground>
     </View>
   );
   return renderedImage;

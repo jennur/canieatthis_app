@@ -29,6 +29,12 @@ export const base = StyleSheet.create({
     alignItems: "flex-start",
     backgroundColor: "#001E32"
   },
+  imageContainer: {
+    width: viewportWidth,
+    position: "relative",
+    margin: 0,
+    padding: 0
+  },
   maxWidthContainer: {
     width: viewportWidth
   },
@@ -61,10 +67,11 @@ export const base = StyleSheet.create({
     backgroundColor: "transparent"
   },
   image: {
-    width: viewportWidth,
     position: "absolute",
     top: 0,
-    left: 0
+    left: 0,
+    margin: 0,
+    padding: 0
   },
   headline: {
     fontSize: 25,

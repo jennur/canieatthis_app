@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image } from "react-native";
 import { base } from "../styles/base";
 
 const eggsIcon = require("../assets/allergy-icons/eggs.png");
@@ -119,7 +119,11 @@ class Results extends React.Component {
           break;
       }
     }
-    allergens = allergens.length ? allergens : "No allergens detected";
+    allergens = allergens.length ? (
+      allergens
+    ) : (
+      <Text style={base.allergenText}>No allergens detected</Text>
+    );
     return allergens;
   }
 

@@ -4,7 +4,8 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
+  Image
 } from "react-native";
 
 import { Camera, Permissions } from "expo";
@@ -24,6 +25,8 @@ export default class CameraView extends React.Component {
     type: Camera.Constants.Type.back,
     beforeCapture: true,
     image: null,
+    imageWidth: null,
+    imageHeight: null,
     ingredients: "",
     allergens: null,
     imageWithBoxes: null,
@@ -47,7 +50,13 @@ export default class CameraView extends React.Component {
         })
         .then(
           picture => {
-            let resizedImage = resizeImage(picture["uri"], 600);
+            //const { width: screenWidth } = Dimensions.get("window").width;
+
+            //console.log("SCREENWIDTH:::: " + screenWidth);
+            let resizedImage = resizeImage(
+              picture["uri"],
+              Dimensions.get("window").width
+            );
             this.setState({
               beforeCapture: false
             });
@@ -61,6 +70,9 @@ export default class CameraView extends React.Component {
         .then(
           image => {
             let data = postImage(image.base64);
+            Image.getSize(image.uri, (width, height) => {
+              this.setState({ imageWidth: width, imageHeight: height });
+            });
             this.setState({
               image: image
             });
@@ -75,15 +87,21 @@ export default class CameraView extends React.Component {
           data => {
             this.setState({ ingredients: data["image"]["text"] });
             console.log(
-              "DATA FROM CAMERA::::" + data["image"]["text"] + ":::END DATA"
+              "TEXT DATA FROM CAMERA::::" +
+                data["image"]["text"] +
+                ":::END TEXT DATA"
             );
+
             /* Add colored boxes to posted image */
             let imageWithBoxes = renderTextBoxes(
               this.state.image,
+              this.state.imageWidth,
+              this.state.imageHeight,
               data["image"]["text_full"]
             );
             this.setState({ imageWithBoxes: imageWithBoxes });
             /* End add colored boxes to posted image */
+
             return data["image"]["id"];
           },
           error =>
@@ -135,7 +153,7 @@ export default class CameraView extends React.Component {
             }}
             style={base.camera}
           >
-            <View style={base.cameraView}>
+            <View style={base.cameraView} keyboardShouldPersistTaps="always">
               <TouchableOpacity
                 style={base.buttonBottomScreen}
                 onPress={() => {
